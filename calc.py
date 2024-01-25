@@ -1,6 +1,9 @@
 import pandas as pd
 import numpy as np
 import sys
+from os.path import isdir
+from os import listdir
+import os
 
 def calc_efficiency(f):
    df = pd.read_csv(f)
@@ -29,11 +32,34 @@ def calc_efficiency(f):
    energy_wh_mi = energy_used_wh[-1] / dist[1, -1]
    print(f"{f} :\nDistance travelled: {round(dist[1, -1], 3)} mi\nEnergy efficiency: {round(energy_wh_mi, 3)} wh/mi\n")
 
+   return energy_used_wh[-1], dist[1, -1]
+
 if __name__ == "__main__":
    if len(sys.argv) == 1:
       print('Usage: python calc.py <log file 0>, <log file 1>, ...')
       exit(1)
 
-   for f in sys.argv[1:]:
-      calc_efficiency(f)
 
+   i = 0
+
+   if isdir(sys.argv[1]):
+      l = listdir(sys.argv[1])
+      energy_use = np.zeros((len(l)))
+      distance = np.zeros((len(l)))
+      for f in l:
+         f = os.path.join(sys.argv[1], f)
+         e, d = calc_efficiency(f)
+         energy_use[i] = e
+         distance[i] = d
+         i += 1
+   else:
+      energy_use = np.zeros((len(sys.argv) - 1))
+      distance = np.zeros((len(sys.argv) - 1))
+      for f in sys.argv[1:]:
+         e, d = calc_efficiency(f)
+         energy_use[i] = e
+         distance[i] = d
+         i += 1
+
+   if i > 1:
+      print(f"\nTotal distance travelled: { round( distance.sum(), 3 ) } mi = { round( distance.sum() * 1.60934, 3 ) } km\nTotal energy efficiency: { round( energy_use.sum() / distance.sum(), 3 ) } wh/mi = { round( energy_use.sum() / 1.60934 / distance.sum(), 3 ) } wh/km")
