@@ -4,6 +4,9 @@ import sys
 from os.path import isdir
 from os import listdir
 import os
+import warnings
+
+warnings.simplefilter(action='ignore', category=UserWarning)
 
 def calc_efficiency(f):
    df = pd.read_csv(f)
@@ -30,7 +33,7 @@ def calc_efficiency(f):
 
    # Calculate trip efficiency
    energy_wh_mi = energy_used_wh[-1] / dist[1, -1]
-   print(f"{f} :\nDistance travelled: {round(dist[1, -1], 3)} mi\nEnergy used: { round( energy_use.sum(), 3 ) } wh\nEnergy efficiency: {round(energy_wh_mi, 3)} wh/mi\n")
+   print(f"{f} :\nDistance travelled: {round(dist[1, -1], 3)} mi\nEnergy used: { round( energy_used_wh[-1], 3 ) } wh\nEnergy efficiency: {round(energy_wh_mi, 3)} wh/mi\n")
 
    return energy_used_wh[-1], dist[1, -1]
 
