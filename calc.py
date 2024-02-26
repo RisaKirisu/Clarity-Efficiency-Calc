@@ -30,7 +30,7 @@ def calc_efficiency(f):
 
    # Calculate trip efficiency
    energy_wh_mi = energy_used_wh[-1] / dist[1, -1]
-   print(f"{f} :\nDistance travelled: {round(dist[1, -1], 3)} mi\nEnergy efficiency: {round(energy_wh_mi, 3)} wh/mi\n")
+   print(f"{f} :\nDistance travelled: {round(dist[1, -1], 3)} mi\nEnergy used: { round( energy_use.sum(), 3 ) } wh\nEnergy efficiency: {round(energy_wh_mi, 3)} wh/mi\n")
 
    return energy_used_wh[-1], dist[1, -1]
 
@@ -62,4 +62,4 @@ if __name__ == "__main__":
          i += 1
 
    if i > 1:
-      print(f"\nTotal distance travelled: { round( distance.sum(), 3 ) } mi = { round( distance.sum() * 1.60934, 3 ) } km\nTotal energy efficiency: { round( energy_use.sum() / distance.sum(), 3 ) } wh/mi = { round( energy_use.sum() / 1.60934 / distance.sum(), 3 ) } wh/km")
+      print(f"\nTotal distance travelled: { round( distance.sum(), 3 ) } mi = { round( distance.sum() * 1.60934, 3 ) } km\nTotal energy used: { round( energy_use.sum(), 3 ) } wh\nTotal energy efficiency: { round( energy_use.sum() / distance.sum(), 3 ) } wh/mi = { round( energy_use.sum() / 1.60934 / distance.sum(), 3 ) } wh/km")
